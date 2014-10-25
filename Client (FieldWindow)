@@ -5,22 +5,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-class FieldWindow extends Frame implements ActionListener {
+class FieldWindow extends Frame implements ActionListener 
+{
 
-    private class ExitAL implements ActionListener {
+    private class ExitAL implements ActionListener 
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == ext) {
+        public void actionPerformed(ActionEvent e) 
+        {
+            if (e.getSource() == ext) 
+            {
                 NetClientThread.send("#" + name);
                 NetClientThread.out.close();
-                try {
+                try 
+                {
                     NetClientThread.in.close();
-                } catch (IOException e2) {
+                } catch (IOException e2)
+                {
                     e2.printStackTrace();
                 }
-                try {
+                try 
+                {
                     NetClientThread.s.close();
-                } catch (IOException e1) {
+                } catch (IOException e1) 
+                {
                     e1.printStackTrace();
                 }
                 System.exit(0);
@@ -41,7 +49,8 @@ class FieldWindow extends Frame implements ActionListener {
     Frame wind1 = new Frame(name);
     static int len, i = 0, u = 0;
 
-    FieldWindow() {
+    FieldWindow() 
+    {
         wind1.setLayout(new FlowLayout());
         wind1.add(chat);
         wind1.add(str);
@@ -55,16 +64,21 @@ class FieldWindow extends Frame implements ActionListener {
         wind1.setVisible(true);
     }
 
-    public void start() {
-        if (NetClientThread.Errors != null) {
+    public void start() 
+    {
+        if (NetClientThread.Errors != null) 
+        {
             chat.append(NetClientThread.Errors);
             NetClientThread.Errors = null;
         }
-        while (true) {
-            if ((NetClientThread.Message != null) && (NetClientThread.Message != "")) {
+        while (true) 
+        {
+            if ((NetClientThread.Message != null) && (NetClientThread.Message != "")) 
+            {
                 incopy = NetClientThread.Message;
                 NetClientThread.Message = null;
-                switch (incopy.charAt(0)) {
+                switch (incopy.charAt(0)) 
+                {
                     case '@':
                         len = incopy.length() - 1;
                         for (i = 1; i <= len; i++) {
@@ -77,7 +91,8 @@ class FieldWindow extends Frame implements ActionListener {
                         break;
                     case '#':
                         len = incopy.length() - 1;
-                        for (i = 1; i <= len; i++) {
+                        for (i = 1; i <= len; i++) 
+                        {
                             command = command + incopy.charAt(i);
                         }
                         i = 1;
@@ -92,14 +107,17 @@ class FieldWindow extends Frame implements ActionListener {
             }
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e) 
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == send) {
+    public void actionPerformed(ActionEvent e) 
+    {
+        if (e.getSource() == send) 
+        {
             mess = str.getText();
             NetClientThread.send(mess);
             str.setText("");
