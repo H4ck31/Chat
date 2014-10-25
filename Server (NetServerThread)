@@ -25,7 +25,8 @@ public class NetServerThread extends Thread
             System.out.println("ошибка: " + e);
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         try {
             ServerSocket server = new ServerSocket(8030);
             while (true)
@@ -37,7 +38,8 @@ public class NetServerThread extends Thread
                 nst.start();
                 incom.start();
             }
-        } catch(IOException e) {
+        } catch(IOException e)
+        {
             System.out.println("ошибка: " + e);}
     }
     public void run()
@@ -52,7 +54,8 @@ public class NetServerThread extends Thread
             {
                 Thread.sleep(100);
             }
-            catch (InterruptedException e) {e.printStackTrace();}
+            catch (InterruptedException e) {e.printStackTrace();
+            }
         }
     }
     public void send(String msg)
