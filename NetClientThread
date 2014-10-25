@@ -1,0 +1,109 @@
+package Client;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+class FieldWindow extends Frame implements ActionListener {
+
+    private class ExitAL implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == ext) {
+                NetClientThread.send("#" + name);
+                NetClientThread.out.close();
+                try {
+                    NetClientThread.in.close();
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+                try {
+                    NetClientThread.s.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                System.exit(0);
+            }
+
+        }
+    }
+
+    private static final long serialVersionUID = 1L;
+    static TextArea chat = new TextArea("", 25, 65, TextArea.SCROLLBARS_VERTICAL_ONLY);
+    TextField str = new TextField(58);
+    Button send = new Button("Send");
+    Button ext = new Button("Exit");
+    static String command = "";
+    static String incopy = null;
+    static String mess = null;
+    static String name = "Hacker";
+    Frame wind1 = new Frame(name);
+    static int len, i = 0, u = 0;
+
+    FieldWindow() {
+        wind1.setLayout(new FlowLayout());
+        wind1.add(chat);
+        wind1.add(str);
+        wind1.add(send);
+        ext.addActionListener(new ExitAL());
+        send.addActionListener(this);
+        wind1.add(ext);
+        wind1.setSize(500, 500);
+        wind1.setLocation(120, 60);
+        wind1.setResizable(false);
+        wind1.setVisible(true);
+    }
+
+    public void start() {
+        if (NetClientThread.Errors != null) {
+            chat.append(NetClientThread.Errors);
+            NetClientThread.Errors = null;
+        }
+        while (true) {
+            if ((NetClientThread.Message != null) && (NetClientThread.Message != "")) {
+                incopy = NetClientThread.Message;
+                NetClientThread.Message = null;
+                switch (incopy.charAt(0)) {
+                    case '@':
+                        len = incopy.length() - 1;
+                        for (i = 1; i <= len; i++) {
+                            command = command + incopy.charAt(i);
+                        }
+                        i = 1;
+                        chat.append("В чат вошел пользаватель: " + command + "\n");
+                        incopy = null;
+                        command = "";
+                        break;
+                    case '#':
+                        len = incopy.length() - 1;
+                        for (i = 1; i <= len; i++) {
+                            command = command + incopy.charAt(i);
+                        }
+                        i = 1;
+                        chat.append("Из чата вышел пользаватель: " + command + "\n");
+                        incopy = null;
+                        command = "";
+                        break;
+                    default:
+                        chat.append(incopy);
+                        chat.append("\n");
+                }
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == send) {
+            mess = str.getText();
+            NetClientThread.send(mess);
+            str.setText("");
+        }
+    }
+}
+
