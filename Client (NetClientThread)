@@ -22,7 +22,8 @@ public class NetClientThread extends Thread
             InputStreamReader isr = new InputStreamReader (s.getInputStream());
             in = new BufferedReader(isr);
             out=new PrintWriter(s.getOutputStream(), true);
-        } catch (IOException e) {Errors="Ошибка соединения";}
+        } catch (IOException e) {Errors="Ошибка соединения";
+        }
     }
     public static void main(String[] args)
     {
