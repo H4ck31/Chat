@@ -1,0 +1,33 @@
+ package Server;
+    import java.net.*;import java.io.*;
+    class Incoming extends Thread{
+        Socket sock;
+        BufferedReader in = null;
+        String soobsh=null;
+        Incoming(Socket s)
+        {
+            sock = s;
+            try
+            {
+                InputStreamReader isr = new InputStreamReader (sock.getInputStream());
+                in = new BufferedReader(isr);
+            }
+            catch (IOException e) {System.out.println("ошибка: " + e);}
+        }
+        public void run()
+        {
+            while (true)
+            {
+                try
+                {
+                    soobsh= in.readLine();
+                    if(soobsh!=null)
+                    {
+                        NetServerThread.Message = soobsh;
+                        soobsh=null;
+                    }
+                }
+                catch (IOException e) {break;}
+            }
+        }
+    }
