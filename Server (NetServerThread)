@@ -1,0 +1,63 @@
+package Server;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class NetServerThread extends Thread
+{
+    String lastm;
+    Socket socket;
+    int i=0;
+    PrintStream ps;
+    public static String Message=null;
+    public NetServerThread(Socket s)
+    {
+        lastm=null;
+        socket = s;
+        try
+        {
+            ps = new PrintStream(s.getOutputStream());
+        }
+        catch (IOException e)
+        {
+            System.out.println("ошибка: " + e);
+        }
+    }
+    public static void main(String[] args) {
+        try {
+            ServerSocket server = new ServerSocket(8030);
+            while (true)
+            {
+                Socket s = null;
+                s = server.accept();
+                NetServerThread nst = new NetServerThread(s);
+                Incoming incom = new Incoming(s);
+                nst.start();
+                incom.start();
+            }
+        } catch(IOException e) {
+            System.out.println("ошибка: " + e);}
+    }
+    public void run()
+    {
+        while (true)
+        {
+            if((Message!=null)&&(lastm!=Message))
+            {
+                lastm=Message; send(lastm);
+            }
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e) {e.printStackTrace();}
+        }
+    }
+    public void send(String msg)
+    {
+        ps.println(msg);
+        ps.flush();
+    }
+}
