@@ -1,6 +1,7 @@
  package Server;
     import java.net.*;import java.io.*;
-    class Incoming extends Thread{
+    class Incoming extends Thread
+    {
         Socket sock;
         BufferedReader in = null;
         String soobsh=null;
@@ -12,7 +13,8 @@
                 InputStreamReader isr = new InputStreamReader (sock.getInputStream());
                 in = new BufferedReader(isr);
             }
-            catch (IOException e) {System.out.println("ошибка: " + e);}
+            catch (IOException e) {System.out.println("ошибка: " + e);
+            }
         }
         public void run()
         {
@@ -27,7 +29,8 @@
                         soobsh=null;
                     }
                 }
-                catch (IOException e) {break;}
+                catch (IOException e) {break;
+                }
             }
         }
     }
